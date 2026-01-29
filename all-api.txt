@@ -1,0 +1,1116 @@
+query GetTournament {
+  tournament(id: "1") {
+    ...tournamentFields
+  }
+}
+query GetTournaments {
+  tournaments {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ...tournamentFields
+      }
+    }
+  }
+}
+fragment tournamentFields on Tournament {
+  id
+  name
+  nameShortened
+}  response  {
+  "data": {
+    "tournaments": {
+      "pageInfo": {
+        "hasPreviousPage": false,
+        "hasNextPage": true,
+        "startCursor": "PjMLC1oLC0BCQU5HQAsLWgsL",
+        "endCursor": "PjMLC1oLC0BCQEdPQAsLWgsL"
+      },
+      "totalCount": 214,
+      "edges": [
+        {
+          "cursor": "PjMLC1oLC0BCQU5HQAsLWgsL",
+          "node": {
+            "id": "756907",
+            "name": "LCK - Spring 2024 (Regular Season: Regular Season)",
+            "nameShortened": "Regular Season"
+          }
+        },
+        {
+          "cursor": "PjMLC1oLC0BCQU5HTwsLWgsL",
+          "node": {
+            "id": "756908",
+            "name": "LCK - Spring 2024 (Playoffs: Playoffs)",
+            "nameShortened": "Playoffs"
+          }
+        },
+        {
+          "cursor": "PjMLC1oLC0BCQU5FTwsLWgsL",
+          "node": {
+            "id": "756928",
+            "name": "LEC - Winter 2024 (Regular Season: Regular Season)",
+            "nameShortened": "Regular Season"
+          }
+        },
+        {
+          "cursor": "PjMLC1oLC0BCQU5EQgsLWgsL",
+          "node": {
+            "id": "756935",
+            "name": "LCS - Spring 2024 (Regular Season: Regular Season)",
+            "nameShortened": "Regular Season"
+          }
+        },
+        {
+          "cursor": "PjMLC1oLC0BCQU5BRwsLWgsL",
+          "node": {
+            "id": "756960",
+            "name": "LPL - Spring 2024 (Regular Season: Regular Season)",
+            "nameShortened": "Regular Season"
+          }
+        },
+        {
+          "cursor": "PjMLC1oLC0BCQU5BRQsLWgsL",
+          "node": {
+            "id": "756962",
+            "name": "LPL - Spring 2024 (Playoffs: Playoffs)",
+            "nameShortened": "Playoffs"
+          }
+        },
+        {
+          "cursor": "PjMLC1oLC0BCQEdBTwsLWgsL",
+          "node": {
+            "id": "757068",
+            "name": "LEC - Winter 2024 (Playoffs: Playoffs)",
+            "nameShortened": "Playoffs"
+          }
+        },
+        {
+          "cursor": "PjMLC1oLC0BCQEdARAsLWgsL",
+          "node": {
+            "id": "757073",
+            "name": "VCT Americas - Kickoff 2024 (Groups: Group A)",
+            "nameShortened": "Group A"
+          }
+        },
+        {
+          "cursor": "PjMLC1oLC0BCQEdAQwsLWgsL",
+          "node": {
+            "id": "757074",
+            "name": "VCT Americas - Kickoff 2024 (Playoffs: Playoffs)",
+            "nameShortened": "Playoffs"
+          }
+        },
+        {
+          "cursor": "PjMLC1oLC0BCQEdPQAsLWgsL",
+          "node": {
+            "id": "757087",
+            "name": "LCS - Spring 2024 (Playoffs: Playoffs)",
+            "nameShortened": "Playoffs"
+          }
+        }
+      ]
+    }
+  }
+} 
+
+next 
+query GetCsgoLoopfeedSeries {
+  series(id: "1") {
+    ...seriesFields
+  }
+}
+query GetAllSeriesInNext24Hours {
+  allSeries(
+    filter:{
+      startTimeScheduled:{
+        gte: "2024-04-24T15:00:07+02:00"
+        lte: "2024-04-25T15:00:07+02:00"
+      }
+    }
+    orderBy: StartTimeScheduled
+  ) {
+    totalCount,
+    pageInfo{
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    edges{
+      cursor
+      node{
+        ...seriesFields
+      }
+    }
+  }
+}
+fragment seriesFields on Series {
+  id
+  title {
+    nameShortened
+  }
+  tournament {
+    nameShortened
+  }
+  startTimeScheduled
+  format {
+    name
+    nameShortened
+  }
+  teams {
+    baseInfo {
+      name
+    }
+    scoreAdvantage
+  }
+}
+query SeriesFormats {
+  seriesFormats {
+    id
+    name
+    nameShortened 
+  }
+} {
+  "data": {
+    "allSeries": {
+      "totalCount": 2,
+      "pageInfo": {
+        "hasPreviousPage": false,
+        "hasNextPage": false,
+        "startCursor": "JAMWBQMjHhoSJBQfEhMCGxITCwtaCwtFQUJETk9PCwtaCwtFR0VDWkdDWkVDI0VGTUdHTUdHLQ==",
+        "endCursor": "JAMWBQMjHhoSJBQfEhMCGxITCwtaCwtFQUJETk9OCwtaCwtFR0VDWkdDWkVCI0dHTUdHTUdHLQ=="
+      },
+      "edges": [
+        {
+          "cursor": "JAMWBQMjHhoSJBQfEhMCGxITCwtaCwtFQUJETk9PCwtaCwtFR0VDWkdDWkVDI0VGTUdHTUdHLQ==",
+          "node": {
+            "id": "2653988",
+            "title": {
+              "nameShortened": "val"
+            },
+            "tournament": {
+              "nameShortened": "Alpha Group"
+            },
+            "startTimeScheduled": "2024-04-24T21:00:00Z",
+            "format": {
+              "name": "best-of-3",
+              "nameShortened": "Bo3"
+            },
+            "teams": [
+              {
+                "baseInfo": {
+                  "name": "G2 Esports"
+                },
+                "scoreAdvantage": 0
+              },
+              {
+                "baseInfo": {
+                  "name": "Leviatán Esports"
+                },
+                "scoreAdvantage": 0
+              }
+            ]
+          }
+        },
+        {
+          "cursor": "JAMWBQMjHhoSJBQfEhMCGxITCwtaCwtFQUJETk9OCwtaCwtFR0VDWkdDWkVCI0dHTUdHTUdHLQ==",
+          "node": {
+            "id": "2653989",
+            "title": {
+              "nameShortened": "val"
+            },
+            "tournament": {
+              "nameShortened": "Alpha Group"
+            },
+            "startTimeScheduled": "2024-04-25T00:00:00Z",
+            "format": {
+              "name": "best-of-3",
+              "nameShortened": "Bo3"
+            },
+            "teams": [
+              {
+                "baseInfo": {
+                  "name": "KRÜ Esports"
+                },
+                "scoreAdvantage": 0
+              },
+              {
+                "baseInfo": {
+                  "name": "LOUD (1)"
+                },
+                "scoreAdvantage": 0
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+} get allseriesnext24  hrs
+
+series forate 
+
+{
+  "data": {
+    "seriesFormats": [
+      {
+        "id": "1",
+        "name": "best-of-1",
+        "nameShortened": "Bo1"
+      },
+      {
+        "id": "2",
+        "name": "best-of-2",
+        "nameShortened": "Bo2"
+      },
+      {
+        "id": "3",
+        "name": "best-of-3",
+        "nameShortened": "Bo3"
+      },
+      {
+        "id": "4",
+        "name": "best-of-5",
+        "nameShortened": "Bo5"
+      },
+      {
+        "id": "5",
+        "name": "best-of-7",
+        "nameShortened": "Bo7"
+      },
+      {
+        "id": "6",
+        "name": "score-after-1",
+        "nameShortened": "SA1"
+      },
+      {
+        "id": "7",
+        "name": "score-after-2",
+        "nameShortened": "SA2"
+      },
+      {
+        "id": "8",
+        "name": "score-after-3",
+        "nameShortened": "SA3"
+      },
+      {
+        "id": "9",
+        "name": "score-after-4",
+        "nameShortened": "SA4"
+      },
+      {
+        "id": "10",
+        "name": "score-after-5",
+        "nameShortened": "SA5"
+      },
+      {
+        "id": "11",
+        "name": "score-after-6",
+        "nameShortened": "SA6"
+      },
+      {
+        "id": "12",
+        "name": "score-after-7",
+        "nameShortened": "SA7"
+      },
+      {
+        "id": "13",
+        "name": "score-after-8",
+        "nameShortened": "SA8"
+      },
+      {
+        "id": "14",
+        "name": "score-after-9",
+        "nameShortened": "SA9"
+      }
+    ]
+  }
+} 
+
+organization 
+query GetOrganization {
+  organization(id: "1") {
+    ...organizationFields
+  }
+}
+query GetOrganizations {
+  organizations(first: 5) {
+    edges {
+      node {
+        ...organizationFields
+      }
+    }
+  }
+}
+fragment organizationFields on Organization {
+  id
+  name
+  teams {
+    name
+  }
+} getorganization
+
+{
+  "data": {
+    "organizations": {
+      "edges": [
+        {
+          "node": {
+            "id": "1",
+            "name": "Cloud9",
+            "teams": [
+              {
+                "name": "Cloud9"
+              },
+              {
+                "name": "Cloud9 White"
+              },
+              {
+                "name": "Cloud9 Academy"
+              },
+              {
+                "name": "Cloud9 Challengers"
+              },
+              {
+                "name": "Cloud9 Kia"
+              },
+              {
+                "name": "Cloud9"
+              },
+              {
+                "name": "Cloud9"
+              },
+              {
+                "name": "Cloud9"
+              }
+            ]
+          }
+        },
+        {
+          "node": {
+            "id": "2",
+            "name": "G2 Esports",
+            "teams": [
+              {
+                "name": "G2 Esports"
+              },
+              {
+                "name": "G2 Gozen"
+              },
+              {
+                "name": "G2 Esports"
+              },
+              {
+                "name": "G2 Esports"
+              },
+              {
+                "name": "G2 Esports"
+              },
+              {
+                "name": "G2 Esports"
+              }
+            ]
+          }
+        },
+        {
+          "node": {
+            "id": "3",
+            "name": "FENNEL",
+            "teams": [
+              {
+                "name": "FENNEL HOTELAVA"
+              },
+              {
+                "name": "FENNEL"
+              },
+              {
+                "name": "FENNEL"
+              }
+            ]
+          }
+        },
+        {
+          "node": {
+            "id": "8",
+            "name": "Sprout",
+            "teams": [
+              {
+                "name": "Sprout"
+              },
+              {
+                "name": "Sprout"
+              },
+              {
+                "name": "Sprout"
+              },
+              {
+                "name": "Sprout"
+              },
+              {
+                "name": "Sprout"
+              }
+            ]
+          }
+        },
+        {
+          "node": {
+            "id": "9",
+            "name": "Valiance",
+            "teams": [
+              {
+                "name": "Valiance"
+              },
+              {
+                "name": "Valiance"
+              },
+              {
+                "name": "Valiance"
+              },
+              {
+                "name": "Valiance"
+              },
+              {
+                "name": "Valiance"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+} 
+
+
+query GetTeam {
+  team(id: "1") {
+    ...teamFields
+  }
+}
+query GetTeams {
+  teams(first: 5, after: null) {
+    totalCount
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ...teamFields
+      }
+    }
+  }
+}
+fragment teamFields on Team {
+  id
+  name
+  colorPrimary
+  colorSecondary
+  logoUrl
+  externalLinks {
+    dataProvider {
+      name
+    }
+    externalEntity {
+      id
+    }
+  }
+} 
+
+{
+  "data": {
+    "teams": {
+      "totalCount": 3793,
+      "pageInfo": {
+        "hasPreviousPage": false,
+        "hasNextPage": true,
+        "startCursor": "PjMLC1oLC0QLC1oLCw==",
+        "endCursor": "PjMLC1oLC0VCCwtaCws="
+      },
+      "edges": [
+        {
+          "cursor": "PjMLC1oLC0QLC1oLCw==",
+          "node": {
+            "id": "3",
+            "name": "Valiance",
+            "colorPrimary": "#da1e28",
+            "colorSecondary": "#9fa7a7",
+            "logoUrl": "https://cdn.grid.gg/assets/team-logos/e7afed27c212cf39626d37ec74c0f95e",
+            "externalLinks": []
+          }
+        },
+        {
+          "cursor": "PjMLC1oLC0ILC1oLCw==",
+          "node": {
+            "id": "5",
+            "name": "3DMAX",
+            "colorPrimary": "#DA1E28",
+            "colorSecondary": "#FBC817",
+            "logoUrl": "https://cdn.grid.gg/assets/team-logos/7547ae4d97e4e0c4058a642ac57c6747",
+            "externalLinks": []
+          }
+        },
+        {
+          "cursor": "PjMLC1oLC0ZECwtaCws=",
+          "node": {
+            "id": "13",
+            "name": "ALTERNATE aTTaX",
+            "colorPrimary": "#750E13",
+            "colorSecondary": "#FBC817",
+            "logoUrl": "https://cdn.grid.gg/assets/team-logos/35302b73f3797cb49687355b4bd3e12c",
+            "externalLinks": [
+              {
+                "dataProvider": {
+                  "name": "VALORANT"
+                },
+                "externalEntity": {
+                  "id": "108233466257190667"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "cursor": "PjMLC1oLC0VDCwtaCws=",
+          "node": {
+            "id": "24",
+            "name": "Ninjas in Pyjamas",
+            "colorPrimary": "#4adaff",
+            "colorSecondary": "#daff00",
+            "logoUrl": "https://cdn.grid.gg/assets/team-logos/35c97a5b06bac7e16406401265c97d42",
+            "externalLinks": [
+              {
+                "dataProvider": {
+                  "name": "VALORANT"
+                },
+                "externalEntity": {
+                  "id": "105681057727144862"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "cursor": "PjMLC1oLC0VCCwtaCws=",
+          "node": {
+            "id": "25",
+            "name": "Alliance",
+            "colorPrimary": "#00884b",
+            "colorSecondary": "#9fa7a7",
+            "logoUrl": "https://cdn.grid.gg/assets/team-logos/5c50ebdce4b1890c640b663d9b4328a1",
+            "externalLinks": [
+              {
+                "dataProvider": {
+                  "name": "VALORANT"
+                },
+                "externalEntity": {
+                  "id": "105751489719953458"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+} getteams
+
+players 
+query GetPlayer {
+  player(id: "1") {
+    ...playerFields
+  }
+}
+query GetPlayers {
+  players(first: 5) {
+    edges {
+      node {
+        ...playerFields
+      }
+    }
+  }
+}
+query GetTeamRoster {
+  players(filter: {teamIdFilter: {id: "1"}}) {
+    edges {
+      node {
+        ...playerFields
+      }
+    }
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+    }
+  }
+}
+fragment playerFields on Player {
+  id
+  nickname
+  title {
+    name
+  }
+} getplayer,getplayers, {
+  "data": {
+    "players": {
+      "edges": [
+        {
+          "node": {
+            "id": "4",
+            "nickname": "Zerost",
+            "title": {
+              "name": "Valorant"
+            }
+          }
+        },
+        {
+          "node": {
+            "id": "5",
+            "nickname": "AsLanMshadW",
+            "title": {
+              "name": "Valorant"
+            }
+          }
+        },
+        {
+          "node": {
+            "id": "6",
+            "nickname": "Boaster",
+            "title": {
+              "name": "Valorant"
+            }
+          }
+        },
+        {
+          "node": {
+            "id": "7",
+            "nickname": "Onur",
+            "title": {
+              "name": "Valorant"
+            }
+          }
+        },
+        {
+          "node": {
+            "id": "8",
+            "nickname": "Baemon",
+            "title": {
+              "name": "Valorant"
+            }
+          }
+        }
+      ]
+    }
+  }
+}  series status 
+
+query GetLiveDotaSeriesState {
+  seriesState(id: "2") {
+    valid
+    updatedAt
+    format
+    started
+    finished
+    teams {
+      name
+      won
+    }
+    games(filter: { started: true, finished: false }) {
+      sequenceNumber
+      teams {
+        name
+        players {
+          name
+          kills
+          deaths
+          netWorth
+          money
+          position {
+            x
+            y
+          }
+        }
+      }
+    }
+  }
+} # (1) team statistics for last 3 months
+query TeamStatisticsForLastThreeMonths {
+  teamStatistics(teamId: "83", filter: { timeWindow: LAST_3_MONTHS }) {
+    id
+    aggregationSeriesIds
+    series {
+      count
+      kills {
+        sum
+        min
+        max
+        avg
+      }
+    }
+    game {
+      count
+      wins {
+        value
+        count
+        percentage
+        streak {
+          min
+          max
+          current
+        }
+      }
+    }
+    segment {
+      type
+      count
+      deaths {
+        sum
+        min
+        max
+        avg
+      }
+    }
+  }
+}
+# (2) team statistics for chosen tournaments
+query TeamStatisticsForChosenTournaments {
+  teamStatistics(teamId: "83", filter: { tournamentIds: { in: ["1", "2"] } }) {
+    id
+    aggregationSeriesIds
+    series {
+      count
+      kills {
+        sum
+        min
+        max
+        avg
+      }
+    }
+    game {
+      count
+      wins {
+        value
+        count
+        percentage
+        streak {
+          min
+          max
+          current
+        }
+      }
+    }
+    segment {
+      type
+      count
+      deaths {
+        sum
+        min
+        max
+        avg
+      }
+    }
+  }
+}
+# (3) player statistics for last 3 months
+query PlayerStatisticsForLastThreeMonths {
+  playerStatistics(playerId: "244", filter: { timeWindow: LAST_3_MONTHS }) {
+    id
+    aggregationSeriesIds
+    series {
+      count
+      kills {
+        sum
+        min
+        max
+        avg
+      }
+    }
+    game {
+      count
+      wins {
+        value
+        count
+        percentage
+        streak {
+          min
+          max
+          current
+        }
+      }
+    }
+    segment {
+      type
+      count
+      deaths {
+        sum
+        min
+        max
+        avg
+      }
+    }
+  }
+}
+# (4) player statistics for chosen tournaments
+query PlayerStatisticsForChosenTournaments {
+  playerStatistics(
+    playerId: "244"
+    filter: { tournamentIds: { in: ["1", "2"] } }
+  ) {
+    id
+    aggregationSeriesIds
+    series {
+      count
+      kills {
+        sum
+        min
+        max
+        avg
+      }
+    }
+    game {
+      count
+      wins {
+        value
+        count
+        percentage
+        streak {
+          min
+          max
+          current
+        }
+      }
+    }
+    segment {
+      type
+      count
+      deaths {
+        sum
+        min
+        max
+        avg
+      }
+    }
+  }
+} statistics 
+
+{
+  "data": {
+    "teamStatistics": {
+      "id": "83",
+      "aggregationSeriesIds": [
+        "2878298",
+        "2878297"
+      ],
+      "series": {
+        "count": 2,
+        "kills": {
+          "sum": 445,
+          "min": 208,
+          "max": 237,
+          "avg": 222.5
+        }
+      },
+      "game": {
+        "count": 6,
+        "wins": [
+          {
+            "value": false,
+            "count": 3,
+            "percentage": 50,
+            "streak": {
+              "min": 1,
+              "max": 2,
+              "current": 0
+            }
+          },
+          {
+            "value": true,
+            "count": 3,
+            "percentage": 50,
+            "streak": {
+              "min": 1,
+              "max": 2,
+              "current": 2
+            }
+          }
+        ]
+      },
+      "segment": [
+        {
+          "type": "round",
+          "count": 131,
+          "deaths": {
+            "sum": 439,
+            "min": 0,
+            "max": 5,
+            "avg": 3.351145038167939
+          }
+        }
+      ]
+    }
+  }
+} getstatisctics for lastthree
+query TeamStatisticsForLastThreeMonths {
+  teamStatistics(teamId: "83", filter: {timeWindow: LAST_3_MONTHS}) {
+    id
+    aggregationSeriesIds
+    series {
+      count
+      kills {
+        sum
+        min
+        max
+        avg
+      }
+    }
+    game {
+      count
+      wins {
+        value
+        count
+        percentage
+        streak {
+          min
+          max
+          current
+        }
+      }
+    }
+    segment {
+      type
+      count
+      deaths {
+        sum
+        min
+        max
+        avg
+      }
+    }
+  }
+}
+
+query TeamStatisticsForChosenTournaments {
+  teamStatistics(teamId: "83", filter: {tournamentIds: {in: ["1", "2"]}}) {
+    id
+    aggregationSeriesIds
+    series {
+      count
+      kills {
+        sum
+        min
+        max
+        avg
+      }
+    }
+    game {
+      count
+      wins {
+        value
+        count
+        percentage
+        streak {
+          min
+          max
+          current
+        }
+      }
+    }
+    segment {
+      type
+      count
+      deaths {
+        sum
+        min
+        max
+        avg
+      }
+    }
+  }
+}
+
+query PlayerStatisticsForLastThreeMonths {
+  playerStatistics(playerId: "244", filter: {timeWindow: LAST_3_MONTHS}) {
+    id
+    aggregationSeriesIds
+    series {
+      count
+      kills {
+        sum
+        min
+        max
+        avg
+      }
+    }
+    game {
+      count
+      wins {
+        value
+        count
+        percentage
+        streak {
+          min
+          max
+          current
+        }
+      }
+    }
+    segment {
+      type
+      count
+      deaths {
+        sum
+        min
+        max
+        avg
+      }
+    }
+  }
+}
+
+query PlayerStatisticsForChosenTournaments {
+  playerStatistics(playerId: "244", filter: {tournamentIds: {in: ["1", "2"]}}) {
+    id
+    aggregationSeriesIds
+    series {
+      count
+      kills {
+        sum
+        min
+        max
+        avg
+      }
+    }
+    game {
+      count
+      wins {
+        value
+        count
+        percentage
+        streak {
+          min
+          max
+          current
+        }
+      }
+    }
+    segment {
+      type
+      count
+      deaths {
+        sum
+        min
+        max
+        avg
+      }
+    }
+  }
+}

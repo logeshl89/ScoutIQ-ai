@@ -1,0 +1,199 @@
+Absolutely 👍
+Below is a **complete, clean, Devpost-ready project description** that covers **tech stack, pages, user flow, system flow, and features** — all in **plain text**, no code, no configs.
+You can paste this **as-is** into your **README or Devpost submission**.
+
+---
+
+# 📌 Project Title
+
+**ScoutIQ – Automated Scouting Report Generator**
+
+---
+
+# 🧠 Project Description
+
+ScoutIQ is an automated scouting report generator designed for Cloud9’s coaching staff. Before every match, coaches and analysts need a concise, data-driven breakdown of their upcoming opponent. ScoutIQ automates this pre-game analysis by leveraging official GRID historical match data to generate a structured, actionable scouting report.
+
+The platform analyzes an opponent’s recent matches to identify team-wide strategies, player tendencies, preferred compositions, and exploitable weaknesses. Instead of manually reviewing hours of match footage and statistics, coaches receive a single, digestible report that clearly explains *how the opponent plays* and *how to beat them*.
+
+---
+
+# 🧱 Tech Stack
+
+## Frontend
+
+* **Next.js (React)** – Full-stack React framework used for routing, UI, and server-side logic
+* **Tailwind CSS** – Utility-first styling for fast and consistent UI development
+* **Recharts / Chart.js** – Used to visualize strategic patterns, player trends, and composition frequencies
+
+## Backend
+
+* **Next.js API Routes** – Handles all server-side logic, including data fetching and analysis
+* **Node.js Runtime** – Executes analytics and integrates with external APIs
+
+## Data & Analytics
+
+* **Official GRID Esports Historical Match Data**
+* JavaScript-based statistical analysis
+* Rule-based pattern detection for strategy, player habits, and weaknesses
+* Lightweight analytical logic focused on clarity and explainability
+
+## Tooling
+
+* **JetBrains IDEs** (WebStorm / IntelliJ)
+* **JetBrains AI Coding Agent – Junie**, used to accelerate development, analytics logic, and report generation
+
+## Security
+
+* Environment-based API key handling
+* No sensitive credentials exposed to the client
+
+---
+
+# 🧩 Application Pages
+
+ScoutIQ is intentionally designed with **minimal pages** to keep the experience fast and focused.
+
+---
+
+## Page 1: Report Generator (Home Page)
+
+**Purpose:**
+Allows the coach or analyst to generate a scouting report.
+
+**Contents:**
+
+* Game selection (VALORANT or League of Legends)
+* Opponent team selection
+* Input for number of recent matches (X)
+* “Generate Scouting Report” button
+
+**Function:**
+Collects user input and triggers the backend analysis pipeline.
+
+---
+
+## Page 2: Scouting Report (Main Page)
+
+**Purpose:**
+Displays the full, generated scouting report in a coach-friendly format.
+
+**Sections:**
+
+1. Team Strategy Overview
+2. Player Tendencies
+3. Compositions & Setups
+4. “How to Win” Actionable Insights
+5. Supporting Data & Reasoning
+
+This page is the **core of the project** and contains all insights required for pre-match preparation.
+
+---
+
+## Page 3: Metrics & Methodology (Optional)
+
+**Purpose:**
+Provides transparency into how insights were generated.
+
+**Contents:**
+
+* Definitions of key metrics
+* Summary of analytical methods
+* Sample data references
+
+This page builds trust and credibility with coaching staff and judges.
+
+---
+
+# 🔄 User Flow
+
+1. User opens the application
+2. Selects the opponent team and number of recent matches
+3. Clicks “Generate Scouting Report”
+4. Application fetches GRID historical match data
+5. Analytics engine processes the data
+6. Scouting report is generated and displayed
+7. User reviews insights and prepares for the match
+
+---
+
+# ⚙️ System Flow
+
+1. User input is sent to the backend via API route
+2. Backend fetches opponent’s recent match data from GRID
+3. Data is normalized and analyzed
+4. Team strategies, player tendencies, and compositions are identified
+5. Weaknesses and counter-strategies are derived
+6. A structured scouting report is generated
+7. Results are returned to the frontend for visualization
+
+---
+
+# 📄 Scouting Report Contents
+
+## 1️⃣ Team-Wide Strategy Overview
+
+* Attack vs defense tendencies
+* Early vs late aggression
+* Pistol round strategies (VALORANT)
+* Objective or site prioritization
+
+**Goal:** Understand how the opponent typically plays at a macro level.
+
+---
+
+## 2️⃣ Player Tendencies
+
+* Most-played agents or champions
+* Aggression and engagement patterns
+* Statistical strengths and weaknesses
+* Role-specific behavior
+
+**Goal:** Identify key players and exploitable habits.
+
+---
+
+## 3️⃣ Compositions & Setups
+
+* Most-played team compositions
+* Map-specific setups
+* Defensive defaults or playstyle classification
+
+**Goal:** Predict what the opponent is likely to run.
+
+---
+
+## 🔥 4️⃣ “How to Win” – Actionable Insights
+
+* Data-backed weaknesses
+* Recommended counter-strategies
+* Clear reasoning behind each recommendation
+
+**Example:**
+“Opponent struggles in A-site retakes with a 32% success rate. Recommend prioritizing late lurks and post-plant utility denial.”
+
+**Goal:** Convert analytics into **immediately usable coaching decisions**.
+
+---
+
+## 5️⃣ Supporting Data & Reasoning
+
+* Each insight is backed by historical match statistics
+* Clear explanation of why a recommendation is made
+
+**Goal:** Ensure transparency and trust.
+
+---
+
+# 🎯 Target Users
+
+* Professional esports coaches
+* Analysts
+* Competitive players
+
+---
+
+# 🏁 Final Outcome
+
+ScoutIQ serves as a **one-stop pre-match intelligence platform**, transforming raw esports data into clear, actionable scouting reports that help teams prepare smarter, faster, and more effectively.
+

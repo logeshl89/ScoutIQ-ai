@@ -1,0 +1,334 @@
+Perfect question 👍
+This is **the core architecture question**, and once you understand this, the whole project becomes *mechanical* to build.
+
+I’ll explain **end-to-end how ScoutIQ works**, step by step, in **simple language**, answering exactly:
+
+* Where teams/organizations come from
+* When APIs are called
+* What data is needed
+* How everything flows from click → report
+
+No assumptions. No gaps.
+
+---
+
+# 🧠 Big Picture (1-line)
+
+> User selects an opponent → system fetches GRID data → system analyzes patterns → system generates a scouting report → UI visualizes it.
+
+---
+
+# 🧩 STEP 1: Where do Teams / Organizations come from?
+
+### Source: **GRID API**
+
+GRID already has:
+
+* Organizations (teams)
+* Players
+* Matches
+* Maps
+* Rounds
+* Agents / champions
+
+### What YOU do
+
+You **do not manually create teams**.
+
+You fetch them from GRID.
+
+---
+
+## How it works practically
+
+### When the app loads (or first time user opens it):
+
+1. Your backend calls GRID:
+
+   * “Give me all teams for VALORANT”
+     or
+   * “Give me teams that played recently”
+
+2. You store:
+
+   * `team_id`
+   * `team_name`
+
+3. You send this list to the frontend.
+
+### Frontend:
+
+* Shows teams in a dropdown:
+
+  > Cloud9, Team Liquid, Fnatic, etc.
+
+📌 **Important**
+You NEVER hardcode team names.
+
+---
+
+# 🧩 STEP 2: User Input (Frontend)
+
+On the **Home Page**, the user selects:
+
+1. **Game**
+
+   * VALORANT (recommended)
+
+2. **Opponent Team**
+
+   * Selected from GRID-fetched list
+
+3. **Number of recent matches (X)**
+
+   * Example: 5, 10
+
+4. Clicks **Generate Scouting Report**
+
+At this moment:
+👉 **NO analysis yet**
+👉 Just collecting input
+
+---
+
+# 🧩 STEP 3: When do you call the APIs?
+
+### ✅ API calls happen ONLY after user clicks
+
+**“Generate Scouting Report”**
+
+This is very important.
+
+---
+
+## API Call Sequence (Backend)
+
+### 1️⃣ Fetch recent matches for the team
+
+You call GRID:
+
+* Input:
+
+  * `team_id`
+  * `X` (number of matches)
+
+* Output:
+
+  * Match IDs
+  * Map names
+  * Match dates
+
+---
+
+### 2️⃣ Fetch detailed match data (loop)
+
+For each match ID:
+
+* Fetch:
+
+  * Rounds
+  * Agent picks
+  * Player stats
+  * Sites
+  * Outcomes
+
+Now you have **raw match data**.
+
+---
+
+# 🧩 STEP 4: What information do you extract?
+
+You extract **only what you need**.
+
+---
+
+## A. Team-Wide Strategy Data
+
+From match + round data:
+
+* Attack vs defense rounds
+* Site hits (A / B / C)
+* Pistol rounds
+* Fast hits vs defaults
+* Rotation tendencies
+
+You compute:
+
+* Percentages
+* Frequencies
+
+Example:
+
+> “70% of pistol rounds hit B”
+
+---
+
+## B. Player Tendency Data
+
+From player stats:
+
+* Agent pick counts
+* First engagement frequency
+* Death locations
+* Role behavior
+
+You compute:
+
+* Most-played agents
+* Aggression score
+* Outliers
+
+Example:
+
+> “Player X plays Jett in 75% of games”
+
+---
+
+## C. Composition & Setup Data
+
+From team agent data:
+
+* Team compositions per map
+* Frequency of each comp
+* Defensive setups
+
+You classify:
+
+* Aggressive
+* Default-heavy
+* Late-round focused
+
+---
+
+# 🧩 STEP 5: How “How to Win” Insights are Generated
+
+This is **logic-based**, not magic.
+
+---
+
+### Pattern → Weakness → Recommendation
+
+Example flow:
+
+1. Pattern detected:
+
+   * “Team hits B in 68% of pistol rounds”
+
+2. Weakness inferred:
+
+   * Predictable early-round strategy
+
+3. Recommendation generated:
+
+   * “Stack B or contest early mid control”
+
+Each insight includes:
+
+* Observation
+* Supporting number
+* Counter-strategy
+
+📌 This satisfies the rule:
+
+> “System should provide data or reasoning behind insights”
+
+---
+
+# 🧩 STEP 6: Backend Output (Structured Report)
+
+Your backend now creates **ONE JSON object**:
+
+```text
+Scouting Report
+├── Team Strategy Overview
+├── Player Tendencies
+├── Compositions & Setups
+├── How to Win Insights
+├── Supporting Metrics
+```
+
+This object is returned to frontend.
+
+---
+
+# 🧩 STEP 7: Frontend Visualization
+
+Frontend does **NO analysis**.
+
+It only:
+
+* Displays data
+* Draws charts
+* Shows insights
+
+---
+
+## What you visualize where
+
+### Team Strategy
+
+* Bar charts (site hit %)
+* Percentage cards
+
+### Player Tendencies
+
+* Tables
+* Agent pick charts
+
+### Compositions
+
+* Pie charts
+* Agent lists
+
+### How to Win
+
+* Highlight cards
+* Bullet points
+
+---
+
+# 🧩 STEP 8: Complete User Flow (End-to-End)
+
+Here is the **full flow in one view**:
+
+1. App loads
+2. Fetch teams from GRID
+3. User selects opponent + X
+4. User clicks Generate
+5. Backend fetches match data
+6. Backend analyzes patterns
+7. Backend generates insights
+8. Frontend renders scouting report
+9. Coach reads & prepares
+
+---
+
+# 🧠 Key Design Rules (Very Important)
+
+* ✅ Fetch teams dynamically
+* ✅ Call APIs only after user action
+* ✅ Analyze only recent matches
+* ✅ Explain every insight
+* ❌ No hardcoded data
+* ❌ No black-box predictions
+
+---
+
+# 🟢 Final Confirmation
+
+✔ This flow is **100% compliant with rules**
+✔ This is how judges expect it to work
+✔ This is realistic for Cloud9 analysts
+✔ This is implementable in Next.js
+
+---
+
+## What do you want next?
+
+I can:
+1️⃣ Draw this as a **simple flow diagram (text-based)**
+2️⃣ Define **exact GRID endpoints to use**
+3️⃣ Create **sample JSON response structure**
+4️⃣ Help you write **analysis logic pseudo-code**
+
+Just tell me the number 🚀

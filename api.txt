@@ -1,0 +1,273 @@
+query GetTeam {
+
+  team(id: "1") {
+
+    ...teamFields
+
+  }
+
+}
+
+query GetTeams {
+
+  teams(first: 5, after: null) {
+
+    totalCount
+
+    pageInfo {
+
+      hasPreviousPage
+
+      hasNextPage
+
+      startCursor
+
+      endCursor
+
+    }
+
+    totalCount
+
+    edges {
+
+      cursor
+
+      node {
+
+        ...teamFields
+
+      }
+
+    }
+
+  }
+
+}
+
+fragment teamFields on Team {
+
+  id
+
+  name
+
+  colorPrimary
+
+  colorSecondary
+
+  logoUrl
+
+  externalLinks {
+
+    dataProvider {
+
+      name
+
+    }
+
+    externalEntity {
+
+      id
+
+    }
+
+  }
+
+}  response is {
+
+  "data": {
+
+    "teams": {
+
+      "totalCount": 3793,
+
+      "pageInfo": {
+
+        "hasPreviousPage": false,
+
+        "hasNextPage": true,
+
+        "startCursor": "PjMLC1oLC0QLC1oLCw==",
+
+        "endCursor": "PjMLC1oLC0VCCwtaCws="
+
+      },
+
+      "edges": [
+
+        {
+
+          "cursor": "PjMLC1oLC0QLC1oLCw==",
+
+          "node": {
+
+            "id": "3",
+
+            "name": "Valiance",
+
+            "colorPrimary": "#da1e28",
+
+            "colorSecondary": "#9fa7a7",
+
+            "logoUrl": "https://cdn.grid.gg/assets/team-logos/e7afed27c212cf39626d37ec74c0f95e",
+
+            "externalLinks": []
+
+          }
+
+        },
+
+        {
+
+          "cursor": "PjMLC1oLC0ILC1oLCw==",
+
+          "node": {
+
+            "id": "5",
+
+            "name": "3DMAX",
+
+            "colorPrimary": "#DA1E28",
+
+            "colorSecondary": "#FBC817",
+
+            "logoUrl": "https://cdn.grid.gg/assets/team-logos/7547ae4d97e4e0c4058a642ac57c6747",
+
+            "externalLinks": []
+
+          }
+
+        },
+
+        {
+
+          "cursor": "PjMLC1oLC0ZECwtaCws=",
+
+          "node": {
+
+            "id": "13",
+
+            "name": "ALTERNATE aTTaX",
+
+            "colorPrimary": "#750E13",
+
+            "colorSecondary": "#FBC817",
+
+            "logoUrl": "https://cdn.grid.gg/assets/team-logos/35302b73f3797cb49687355b4bd3e12c",
+
+            "externalLinks": [
+
+              {
+
+                "dataProvider": {
+
+                  "name": "VALORANT"
+
+                },
+
+                "externalEntity": {
+
+                  "id": "108233466257190667"
+
+                }
+
+              }
+
+            ]
+
+          }
+
+        },
+
+        {
+
+          "cursor": "PjMLC1oLC0VDCwtaCws=",
+
+          "node": {
+
+            "id": "24",
+
+            "name": "Ninjas in Pyjamas",
+
+            "colorPrimary": "#4adaff",
+
+            "colorSecondary": "#daff00",
+
+            "logoUrl": "https://cdn.grid.gg/assets/team-logos/35c97a5b06bac7e16406401265c97d42",
+
+            "externalLinks": [
+
+              {
+
+                "dataProvider": {
+
+                  "name": "VALORANT"
+
+                },
+
+                "externalEntity": {
+
+                  "id": "105681057727144862"
+
+                }
+
+              }
+
+            ]
+
+          }
+
+        },
+
+        {
+
+          "cursor": "PjMLC1oLC0VCCwtaCws=",
+
+          "node": {
+
+            "id": "25",
+
+            "name": "Alliance",
+
+            "colorPrimary": "#00884b",
+
+            "colorSecondary": "#9fa7a7",
+
+            "logoUrl": "https://cdn.grid.gg/assets/team-logos/5c50ebdce4b1890c640b663d9b4328a1",
+
+            "externalLinks": [
+
+              {
+
+                "dataProvider": {
+
+                  "name": "VALORANT"
+
+                },
+
+                "externalEntity": {
+
+                  "id": "105751489719953458"
+
+                }
+
+              }
+
+            ]
+
+          }
+
+        }
+
+      ]
+
+    }
+
+  }
+
+}  Select Endpoint URL
+
+Open Access
+
+https://api-op.grid.gg/central-data/graphql
+
+ENDPOINT URL
