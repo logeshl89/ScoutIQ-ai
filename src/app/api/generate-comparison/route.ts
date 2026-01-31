@@ -76,25 +76,42 @@ function generateComparisonReport(myTeamData: any, opponentData: any, myTeamId: 
 }
 
 function calculateWinRate(teamData: any, side: 'attack' | 'defense'): number {
-  // Since the GRID API teamStatistics field is not working, return 0
-  // In a real implementation, this would calculate from actual match data
-  return 0;
+  // Extract win rate from team stats if available
+  const teamStats = teamData.team?.stats || {};
+  const winRate = teamStats.game?.wins?.find((w: any) => w.value === true)?.percentage || 0;
+  
+  // Check if we have actual data (not all zeros)
+  const matchCount = teamStats.game?.count || 0;
+  const totalKills = teamStats.series?.kills?.sum || 0;
+  const totalDeaths = teamStats.segment?.[0]?.deaths?.sum || 0;
+  
+  const hasRealData = matchCount > 0 || totalKills > 0 || totalDeaths > 0 || winRate > 0;
+  
+  return hasRealData ? winRate : 0;
 }
 
 function calculateRoundWinAfterFirstKill(teamData: any): number {
-  // Since the GRID API teamStatistics field is not working, return 0
+  // Since this specific metric is not available in the GRID API, return 0
   return 0;
 }
 
 function calculateEconomyRating(teamData: any): number {
-  // Since the GRID API teamStatistics field is not working, return 0
+  // Since this specific metric is not available in the GRID API, return 0
   return 0;
 }
 
 function getStrengths(myTeamData: any, opponentData: any): string[] {
-  // Provide appropriate strengths based on available data
+  // Check if my team has real data
+  const myTeamStats = myTeamData.team?.stats || {};
+  const myMatchCount = myTeamStats.game?.count || 0;
+  const myTotalKills = myTeamStats.series?.kills?.sum || 0;
+  const myTotalDeaths = myTeamStats.segment?.[0]?.deaths?.sum || 0;
+  const myWinRate = myTeamStats.game?.wins?.find((w: any) => w.value === true)?.percentage || 0;
+  
+  const myHasRealData = myMatchCount > 0 || myTotalKills > 0 || myTotalDeaths > 0 || myWinRate > 0;
+  
   // If no stats available, provide general strengths
-  if (!myTeamData.teamStats || Object.keys(myTeamData.teamStats).length === 0) {
+  if (!myHasRealData) {
     return [
       "Team cohesion and coordination",
       "Adaptability to different game situations",
@@ -113,8 +130,17 @@ function getStrengths(myTeamData: any, opponentData: any): string[] {
 }
 
 function getWeaknesses(myTeamData: any, opponentData: any): string[] {
-  // Provide appropriate weaknesses based on available data
-  if (!myTeamData.teamStats || Object.keys(myTeamData.teamStats).length === 0) {
+  // Check if my team has real data
+  const myTeamStats = myTeamData.team?.stats || {};
+  const myMatchCount = myTeamStats.game?.count || 0;
+  const myTotalKills = myTeamStats.series?.kills?.sum || 0;
+  const myTotalDeaths = myTeamStats.segment?.[0]?.deaths?.sum || 0;
+  const myWinRate = myTeamStats.game?.wins?.find((w: any) => w.value === true)?.percentage || 0;
+  
+  const myHasRealData = myMatchCount > 0 || myTotalKills > 0 || myTotalDeaths > 0 || myWinRate > 0;
+  
+  // If no stats available, provide general weaknesses
+  if (!myHasRealData) {
     return [
       "Limited data available for accurate assessment",
       "Need more match history for pattern recognition",
@@ -133,10 +159,25 @@ function getWeaknesses(myTeamData: any, opponentData: any): string[] {
 }
 
 function getWinStrategies(myTeamData: any, opponentData: any): string[] {
-  // Generate strategies based on the comparison
-  if (!myTeamData.teamStats || !opponentData.teamStats || 
-      Object.keys(myTeamData.teamStats).length === 0 || 
-      Object.keys(opponentData.teamStats).length === 0) {
+  // Check if both teams have real data
+  const myTeamStats = myTeamData.team?.stats || {};
+  const opponentStats = opponentData.team?.stats || {};
+  
+  const myMatchCount = myTeamStats.game?.count || 0;
+  const myTotalKills = myTeamStats.series?.kills?.sum || 0;
+  const myTotalDeaths = myTeamStats.segment?.[0]?.deaths?.sum || 0;
+  const myWinRate = myTeamStats.game?.wins?.find((w: any) => w.value === true)?.percentage || 0;
+  
+  const opponentMatchCount = opponentStats.game?.count || 0;
+  const opponentTotalKills = opponentStats.series?.kills?.sum || 0;
+  const opponentTotalDeaths = opponentStats.segment?.[0]?.deaths?.sum || 0;
+  const opponentWinRate = opponentStats.game?.wins?.find((w: any) => w.value === true)?.percentage || 0;
+  
+  const myHasRealData = myMatchCount > 0 || myTotalKills > 0 || myTotalDeaths > 0 || myWinRate > 0;
+  const opponentHasRealData = opponentMatchCount > 0 || opponentTotalKills > 0 || opponentTotalDeaths > 0 || opponentWinRate > 0;
+  
+  // If either team doesn't have real data, provide general strategies
+  if (!myHasRealData || !opponentHasRealData) {
     return [
       "Focus on fundamental gameplay mechanics",
       "Emphasize team communication and callouts",
@@ -155,10 +196,25 @@ function getWinStrategies(myTeamData: any, opponentData: any): string[] {
 }
 
 function getTacticalRecommendations(myTeamData: any, opponentData: any): string[] {
-  // Generate tactical recommendations
-  if (!myTeamData.teamStats || !opponentData.teamStats || 
-      Object.keys(myTeamData.teamStats).length === 0 || 
-      Object.keys(opponentData.teamStats).length === 0) {
+  // Check if both teams have real data
+  const myTeamStats = myTeamData.team?.stats || {};
+  const opponentStats = opponentData.team?.stats || {};
+  
+  const myMatchCount = myTeamStats.game?.count || 0;
+  const myTotalKills = myTeamStats.series?.kills?.sum || 0;
+  const myTotalDeaths = myTeamStats.segment?.[0]?.deaths?.sum || 0;
+  const myWinRate = myTeamStats.game?.wins?.find((w: any) => w.value === true)?.percentage || 0;
+  
+  const opponentMatchCount = opponentStats.game?.count || 0;
+  const opponentTotalKills = opponentStats.series?.kills?.sum || 0;
+  const opponentTotalDeaths = opponentStats.segment?.[0]?.deaths?.sum || 0;
+  const opponentWinRate = opponentStats.game?.wins?.find((w: any) => w.value === true)?.percentage || 0;
+  
+  const myHasRealData = myMatchCount > 0 || myTotalKills > 0 || myTotalDeaths > 0 || myWinRate > 0;
+  const opponentHasRealData = opponentMatchCount > 0 || opponentTotalKills > 0 || opponentTotalDeaths > 0 || opponentWinRate > 0;
+  
+  // If either team doesn't have real data, provide general recommendations
+  if (!myHasRealData || !opponentHasRealData) {
     return [
       "Focus on individual mechanical improvement",
       "Strengthen team coordination through practice",
@@ -178,8 +234,8 @@ function getTacticalRecommendations(myTeamData: any, opponentData: any): string[
 
 function getPlayerComparison(myTeamData: any, opponentData: any): any[] {
   // Create a comparison between players from both teams
-  const myTeamPlayers = myTeamData.players || [];
-  const opponentPlayers = opponentData.players || [];
+  const myTeamPlayers = myTeamData.team?.players?.edges?.map((edge: any) => edge.node) || [];
+  const opponentPlayers = opponentData.team?.players?.edges?.map((edge: any) => edge.node) || [];
   
   // Create sample data for the chart
   const comparisonData = [];
@@ -187,19 +243,25 @@ function getPlayerComparison(myTeamData: any, opponentData: any): any[] {
   // Get up to 5 players from each team
   const playersToCompare = Math.min(5, Math.max(myTeamPlayers.length, opponentPlayers.length));
   
-  // If we don't have player stats, use placeholder values
+  // Extract stats for each team's players
   for (let i = 0; i < playersToCompare; i++) {
-    const myPlayer = myTeamPlayers[i]?.nickname || `My Player ${i+1}`;
-    const opponentPlayer = opponentPlayers[i]?.nickname || `Opponent Player ${i+1}`;
+    const myPlayer = myTeamPlayers[i];
+    const opponentPlayer = opponentPlayers[i];
     
-    // Use the player name as the identifier
-    const playerName = `${myPlayer} vs ${opponentPlayer}`;
+    // Get player stats from the players object
+    const myPlayerStats = myPlayer && myTeamData.players ? myTeamData.players[myPlayer.id] : {};
+    const opponentPlayerStats = opponentPlayer && opponentData.players ? opponentData.players[opponentPlayer.id] : {};
+    
+    // Calculate values based on available stats
+    const myTeamValue = myPlayerStats.series?.kills?.avg || 0;
+    const opponentValue = opponentPlayerStats.series?.kills?.avg || 0;
+    
+    const playerName = `${myPlayer?.nickname || `My Player ${i+1}`} vs ${opponentPlayer?.nickname || `Opponent Player ${i+1}`}`;
     
     comparisonData.push({
       player: playerName,
-      // Since we don't have actual stats, use placeholder values
-      myTeamValue: 0,
-      opponentValue: 0,
+      myTeamValue,
+      opponentValue,
     });
   }
   
@@ -207,15 +269,11 @@ function getPlayerComparison(myTeamData: any, opponentData: any): any[] {
 }
 
 function getMapPreferences(myTeamData: any, opponentData: any): any[] {
-  // Create map preference data
-  const maps = ['Bind', 'Haven', 'Split', 'Ascent', 'Icebox', 'Breeze', 'Fracture', 'Pearl'];
+  // Extract map statistics if available in team data
+  // Note: GRID API may not provide specific map statistics, so we'll check what's available
   
-  // Since we don't have actual map statistics from the GRID API, return placeholder data
-  return maps.map(map => ({
-    map,
-    myTeamPickRate: 0,
-    opponentPickRate: 0,
-    myTeamWinRate: 0,
-    opponentWinRate: 0,
-  }));
+  // Since the GRID API doesn't provide specific map statistics in the current response,
+  // we'll return an empty array to indicate no map data is available
+  // The frontend will handle this appropriately
+  return [];
 }

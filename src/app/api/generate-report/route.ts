@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
     // Process the raw data into the format expected by the report page
     console.log('Raw data received:', JSON.stringify(rawData, null, 2)); // Debug log
     
-    const processedReport = processRawData(rawData, 'valorant', opponentTeam);
+    const processedReport = processRawData(rawData, 'valorant', opponentTeam, dataSource);
     
     console.log('Processed report data:', JSON.stringify(processedReport, null, 2)); // Debug log
 
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
 /**
  * Process raw GRID API data into the format expected by the report page
  */
-function processRawData(rawData: any, game: string, opponentTeam: string) {
+function processRawData(rawData: any, game: string, opponentTeam: string, dataSource: string = 'TeamStatisticsForLastThreeMonths') {
   // Extract team data
   const teamData = rawData.team;
   console.log('Team data in processRawData:', JSON.stringify(teamData, null, 2)); // Debug log
@@ -67,11 +67,16 @@ function processRawData(rawData: any, game: string, opponentTeam: string) {
   const totalDeaths = teamStats.segment?.[0]?.deaths?.sum || 0;
   const avgDeaths = teamStats.segment?.[0]?.deaths?.avg || 0;
   
+  // Check if we have actual data (not all zeros) according to GRID API validation rule
+  const hasRealData = matchCount > 0 || totalKills > 0 || totalDeaths > 0 || winRate > 0;
+  
   // Calculate supporting data metrics from real GRID API data
-  const avgDuration = 0; // Not available in current API response
-  const siteControlRate = 0; // Not available in current API response
-  const entrySuccessRate = 0; // Not available in current API response
-  const firstRoundRate = 0; // Not available in current API response
+  // Note: These specific metrics (duration, site control, etc.) are not available in the GRID API
+  // We'll set them to 0 which will result in 'No data' messages
+  const avgDuration = 0; // Not available in GRID API
+  const siteControlRate = 0; // Not available in GRID API
+  const entrySuccessRate = 0; // Not available in GRID API
+  const firstRoundRate = 0; // Not available in GRID API
   
   // Process player data from the GRID API structure
   const playerTendencies = players.map((player: any, index: number) => {
@@ -88,6 +93,9 @@ function processRawData(rawData: any, game: string, opponentTeam: string) {
     // Get player win rate from real GRID API data
     const playerWinRate = playerStats.game?.wins?.find((w: any) => w.value === true)?.percentage || 0;
     
+    // Check if this player has real data according to GRID API validation rule
+    const hasPlayerRealData = playerStats.game?.count > 0 || playerStats.series?.kills?.sum > 0 || playerStats.segment?.deaths?.sum > 0 || playerWinRate > 0;
+    
     // Determine role based on index or player data
     const roles = ['ENTRY_FRAGGER', 'INITIATOR', 'CONTROLLER', 'DUELIST', 'SENTINEL'];
     const role = player.role || roles[index % roles.length] || 'UNKNOWN';
@@ -99,8 +107,8 @@ function processRawData(rawData: any, game: string, opponentTeam: string) {
       name: agent,
       role: role,
       championPool: [agent], // Using nickname as agent name
-      winRate: Math.round(playerWinRate),
-      aggression: Math.min(100, Math.round(kdr * 20)) // Scale K/D to aggression percentage
+      winRate: hasPlayerRealData ? Math.round(playerWinRate) : 0,
+      aggression: hasPlayerRealData ? Math.min(100, Math.round(kdr * 20)) : 0 // Scale K/D to aggression percentage
     };
   });
 
@@ -128,27 +136,36 @@ function processRawData(rawData: any, game: string, opponentTeam: string) {
   // Generate actionable insights based on real GRID API data
   const actionableInsights = [];
   
-  if (winRate > 0) {
+  if (hasRealData) {
+    if (winRate > 0) {
+      actionableInsights.push({
+        title: `Exploit Win Rate Pattern`,
+        description: `${opponentTeam} has a ${winRate}% win rate across ${matchCount} matches. Focus on early round pressure and capitalize on their ${Math.round(avgKills)} average kills per match pattern.`,
+        confidence: 'High'
+      });
+    }
+    
+    if (avgKills > 0 && avgDeaths > 0) {
+      actionableInsights.push({
+        title: `Target Based on Performance Metrics`,
+        description: `${opponentTeam} demonstrates strong offensive capability with ${totalKills} total kills and ${totalDeaths} total deaths across matches. Their KDA of ${(avgKills/avgDeaths).toFixed(2)} suggests aggressive playstyle.`,
+        confidence: 'High'
+      });
+    }
+    
+    if (matchCount > 0) {
+      actionableInsights.push({
+        title: `Match History Analysis`,
+        description: `Analyzed ${matchCount} matches for ${opponentTeam}. Data shows consistent performance patterns that can be exploited through strategic preparation.`,
+        confidence: 'Medium'
+      });
+    }
+  } else {
+    // No real data available
     actionableInsights.push({
-      title: `Exploit Win Rate Pattern`,
-      description: `${opponentTeam} has a ${winRate}% win rate across ${matchCount} matches. Focus on early round pressure and capitalize on their ${Math.round(avgKills)} average kills per match pattern.`,
-      confidence: 'High'
-    });
-  }
-  
-  if (avgKills > 0 && avgDeaths > 0) {
-    actionableInsights.push({
-      title: `Target Based on Performance Metrics`,
-      description: `${opponentTeam} demonstrates strong offensive capability with ${totalKills} total kills and ${totalDeaths} total deaths across matches. Their KDA of ${(avgKills/avgDeaths).toFixed(2)} suggests aggressive playstyle.`,
-      confidence: 'High'
-    });
-  }
-  
-  if (matchCount > 0) {
-    actionableInsights.push({
-      title: `Match History Analysis`,
-      description: `Analyzed ${matchCount} matches for ${opponentTeam}. Data shows consistent performance patterns that can be exploited through strategic preparation.`,
-      confidence: 'Medium'
+      title: `No Statistics Available`,
+      description: `The GRID API returned data for ${opponentTeam} but with all zero values. This may indicate the team has no recent matches in the selected data source (${dataSource}), or the tournament IDs don't match active tournaments.`,
+      confidence: 'Low'
     });
   }
   
@@ -190,12 +207,12 @@ function processRawData(rawData: any, game: string, opponentTeam: string) {
 
   return {
     teamStrategy: {
-      attackWinRate: winRate > 0 ? winRate : 0, // Use actual data if available
-      defenseWinRate: winRate > 0 ? Math.max(0, winRate - 5) : 0, // Use actual data if available
-      earlyAggression: winRate > 0 ? Math.min(100, Math.round(avgKills * 3)) : 0, // Base on kill rate
-      lateGameFocus: winRate > 0 ? Math.min(100, Math.round(avgDeaths * 2)) : 0, // Base on survival
-      pistolWinRate: winRate > 0 ? winRate : 0, // Use actual data if available
-      objectivePriority: winRate > 0 ? [`Site Control`, `Entry Frags`, `Utility Denial`] : [`No Data Available - Check Back Later`]
+      attackWinRate: hasRealData ? winRate : 0, // Use actual data if available
+      defenseWinRate: hasRealData ? Math.max(0, winRate - 5) : 0, // Use actual data if available
+      earlyAggression: hasRealData ? Math.min(100, Math.round(avgKills * 3)) : 0, // Base on kill rate
+      lateGameFocus: hasRealData ? Math.min(100, Math.round(avgDeaths * 2)) : 0, // Base on survival
+      pistolWinRate: hasRealData ? winRate : 0, // Use actual data if available
+      objectivePriority: hasRealData ? [`Site Control`, `Entry Frags`, `Utility Denial`] : [`No Data Available - Check Back Later`]
     },
     playerTendencies,
     compositions,

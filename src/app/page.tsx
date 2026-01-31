@@ -22,6 +22,25 @@ export default function Home() {
     fetchTeams();
   }, []);
 
+  // Handle URL parameters on initial load
+  useEffect(() => {
+    if (teams.length > 0) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const teamIdParam = urlParams.get('teamId');
+      const dataSourceParam = urlParams.get('dataSource') as 'TeamStatisticsForLastThreeMonths' | 'TeamStatisticsForChosenTournaments' | 'PlayerStatisticsForLastThreeMonths' | 'PlayerStatisticsForChosenTournaments' || 'TeamStatisticsForLastThreeMonths';
+      
+      if (teamIdParam) {
+        // Find the team by ID and set it as the selected opponent
+        const foundTeam = teams.find(t => t.id === teamIdParam);
+        if (foundTeam) {
+          setOpponentTeam(foundTeam.name);
+        }
+      }
+      
+      setDataSource(dataSourceParam);
+    }
+  }, [teams]);
+
   const fetchTeams = async () => {
     try {
       setTeamsLoading(true);

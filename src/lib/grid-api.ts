@@ -52,7 +52,8 @@ export async function fetchTeams(): Promise<any[]> {
 
     if (result.errors && result.errors.length > 0) {
       console.error('GRID API errors:', result.errors);
-      throw new Error(`GRID API error: ${result.errors[0].message}`);
+      // Don't throw error, return empty array to handle gracefully
+      return [];
     }
 
     // Return all teams without filtering
@@ -66,6 +67,88 @@ export async function fetchTeams(): Promise<any[]> {
     return allTeams;
   } catch (error) {
     console.error('Error fetching teams:', error);
+    return []; // Return empty array on error
+  }
+}
+
+/**
+ * Fetch detailed team information including match statistics
+ */
+export async function fetchDetailedTeams(): Promise<any[]> {
+  try {
+    console.log('Fetching detailed teams from GRID API...'); // Debug log
+    
+    const query = `
+      query GetTeams {
+        teams(first: 50) {
+          edges {
+            node {
+              id
+              name
+            }
+          }
+        }
+      }
+    `;
+
+    const response = await fetch(GRID_API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-API-Key': GRID_API_KEY,
+      },
+      body: JSON.stringify({
+        query,
+        variables: {}
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`GRID API request failed with status ${response.status}`);
+    }
+
+    const result: GridApiResponse = await response.json();
+
+    if (result.errors && result.errors.length > 0) {
+      console.error('GRID API errors:', result.errors);
+      // Don't throw error, return empty array to handle gracefully
+      return [];
+    }
+
+    // Process teams with basic info
+    const allTeams = result.data?.teams?.edges?.map((edge: any) => ({
+      id: edge.node.id,
+      name: edge.node.name,
+      matchCount: 0, // Will be populated later
+      winRate: 0, // Will be populated later
+      lastPlayed: null // Will be populated later
+    })) || [];
+    
+    // For each team, fetch their statistics to get match count and win rate
+    for (let i = 0; i < allTeams.length && i < 20; i++) { // Limit to first 20 teams to avoid too many API calls
+      try {
+        const team = allTeams[i];
+        console.log(`Fetching stats for team ${team.name} (${team.id})`);
+        
+        // Fetch team statistics to get match count and win rate
+        const teamStats = await fetchTeamStatisticsLast3Months(team.id);
+        
+        // Update team with actual statistics
+        team.matchCount = teamStats.series?.count || 0;
+        team.winRate = teamStats.game?.wins?.[0]?.percentage || 0;
+        
+        console.log(`Team ${team.name}: matches=${team.matchCount}, winRate=${team.winRate}%`);
+      } catch (err) {
+        console.error(`Error fetching stats for team ${allTeams[i].name}:`, err);
+        // Keep default values (0 matches, 0% win rate)
+      }
+    }
+
+    console.log('Processed detailed teams count:', allTeams.length); // Debug log
+    
+    return allTeams;
+  } catch (error) {
+    console.error('Error fetching detailed teams:', error);
     return []; // Return empty array on error
   }
 }
@@ -184,14 +267,14 @@ async function fetchTeamRoster(teamId: string): Promise<any[]> {
     });
     
     if (!response.ok) {
-      throw new Error(`GRID API request failed with status ${response.status}`);
+      console.warn(`GRID API request failed with status ${response.status}`);
+      return [];
     }
     
     const result: GridApiResponse = await response.json();
     
     if (result.errors && result.errors.length > 0) {
-      console.error('GRID API errors:', result.errors);
-      // Don't throw error, just return empty array
+      console.warn('GRID API errors (roster):', result.errors);
       return [];
     }
     
@@ -433,13 +516,14 @@ export async function fetchTeamStatisticsLast3Months(teamId: string): Promise<an
     });
     
     if (!response.ok) {
-      throw new Error(`GRID API request failed with status ${response.status}`);
+      console.warn(`GRID API request failed with status ${response.status}`);
+      return {};
     }
     
     const result: GridApiResponse = await response.json();
     
     if (result.errors && result.errors.length > 0) {
-      console.error('GRID API errors:', result.errors);
+      console.warn('GRID API errors (team stats):', result.errors);
       return {};
     }
     
@@ -506,13 +590,14 @@ export async function fetchTeamStatisticsChosenTournaments(teamId: string, tourn
     });
     
     if (!response.ok) {
-      throw new Error(`GRID API request failed with status ${response.status}`);
+      console.warn(`GRID API request failed with status ${response.status}`);
+      return {};
     }
     
     const result: GridApiResponse = await response.json();
     
     if (result.errors && result.errors.length > 0) {
-      console.error('GRID API errors:', result.errors);
+      console.warn('GRID API errors (team stats chosen tournaments):', result.errors);
       return {};
     }
     
@@ -579,13 +664,14 @@ export async function fetchPlayerStatisticsLast3Months(playerId: string): Promis
     });
     
     if (!response.ok) {
-      throw new Error(`GRID API request failed with status ${response.status}`);
+      console.warn(`GRID API request failed with status ${response.status}`);
+      return {};
     }
     
     const result: GridApiResponse = await response.json();
     
     if (result.errors && result.errors.length > 0) {
-      console.error('GRID API errors:', result.errors);
+      console.warn('GRID API errors (player stats last 3 months):', result.errors);
       return {};
     }
     
@@ -652,13 +738,14 @@ export async function fetchPlayerStatisticsChosenTournaments(playerId: string, t
     });
     
     if (!response.ok) {
-      throw new Error(`GRID API request failed with status ${response.status}`);
+      console.warn(`GRID API request failed with status ${response.status}`);
+      return {};
     }
     
     const result: GridApiResponse = await response.json();
     
     if (result.errors && result.errors.length > 0) {
-      console.error('GRID API errors:', result.errors);
+      console.warn('GRID API errors (player stats chosen tournaments):', result.errors);
       return {};
     }
     

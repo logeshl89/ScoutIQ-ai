@@ -272,7 +272,7 @@ export default function ComparisonReportPage() {
           {/* Player Comparison Chart */}
           <section className="mb-12 bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-6">
             <h2 className="text-2xl font-bold text-white mb-6">Player Performance Comparison</h2>
-            {comparisonData.playerComparison.some(p => p.myTeamValue > 0 || p.opponentValue > 0) ? (
+            {comparisonData.playerComparison && comparisonData.playerComparison.length > 0 && comparisonData.playerComparison.some(p => p.myTeamValue > 0 || p.opponentValue > 0) ? (
               <div className="h-80">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
@@ -306,7 +306,7 @@ export default function ComparisonReportPage() {
           {/* Map Preferences */}
           <section className="mb-12 bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-6">
             <h2 className="text-2xl font-bold text-white mb-6">Map Preferences & Win Rates</h2>
-            {comparisonData.mapPreferences.some(m => m.myTeamWinRate > 0 || m.opponentWinRate > 0) ? (
+            {comparisonData.mapPreferences && comparisonData.mapPreferences.length > 0 ? (
               <div className="h-80">
                 <ResponsiveContainer width="100%" height="100%">
                   <RadarChart cx="50%" cy="50%" outerRadius="80%" data={comparisonData.mapPreferences}>

@@ -6,6 +6,9 @@ import Link from 'next/link';
 interface Team {
   id: string;
   name: string;
+  matchCount?: number;
+  winRate?: number;
+  lastPlayed?: string | null;
 }
 
 export default function TeamsPage() {
@@ -76,17 +79,47 @@ export default function TeamsPage() {
                     className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-6 hover:border-gray-600 transition-colors"
                   >
                     <h3 className="text-xl font-semibold text-white mb-2">{team.name}</h3>
-                    <p className="text-gray-400 text-sm">Team ID: {team.id}</p>
-                    <div className="mt-4 flex space-x-2">
+                    <p className="text-gray-400 text-sm mb-3">Team ID: {team.id}</p>
+                    
+                    <div className="grid grid-cols-2 gap-4 mb-4">
+                      <div className="bg-gray-900/50 p-3 rounded-lg">
+                        <p className="text-xs text-gray-500 uppercase tracking-wide">Matches Played</p>
+                        <p className="text-lg font-bold text-white">{team.matchCount !== undefined ? team.matchCount : 'N/A'}</p>
+                      </div>
+                      <div className="bg-gray-900/50 p-3 rounded-lg">
+                        <p className="text-xs text-gray-500 uppercase tracking-wide">Win Rate</p>
+                        <p className="text-lg font-bold text-white">{team.winRate !== undefined ? `${team.winRate}%` : 'N/A'}</p>
+                      </div>
+                    </div>
+                    
+                    <div className="mt-4 flex flex-wrap gap-2">
                       <Link 
-                        href={`/report?teamId=${team.id}`}
-                        className="text-sm bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors"
+                        href={`/report?teamId=${team.id}&dataSource=TeamStatisticsForLastThreeMonths`}
+                        className="text-xs bg-blue-600 hover:bg-blue-700 text-white py-2 px-3 rounded-lg transition-colors whitespace-nowrap"
                       >
-                        View Report
+                        Team - Last 3 Months
+                      </Link>
+                      <Link 
+                        href={`/report?teamId=${team.id}&dataSource=TeamStatisticsForChosenTournaments`}
+                        className="text-xs bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-3 rounded-lg transition-colors whitespace-nowrap"
+                      >
+                        Team - Chosen Tournaments
+                      </Link>
+                      <Link 
+                        href={`/report?teamId=${team.id}&dataSource=PlayerStatisticsForLastThreeMonths`}
+                        className="text-xs bg-teal-600 hover:bg-teal-700 text-white py-2 px-3 rounded-lg transition-colors whitespace-nowrap"
+                      >
+                        Player - Last 3 Months
+                      </Link>
+                      <Link 
+                        href={`/report?teamId=${team.id}&dataSource=PlayerStatisticsForChosenTournaments`}
+                        className="text-xs bg-cyan-600 hover:bg-cyan-700 text-white py-2 px-3 rounded-lg transition-colors whitespace-nowrap"
+                      >
+                        Player - Chosen Tournaments
                       </Link>
                       <Link 
                         href={`/comparison?myTeam=${team.id}`}
-                        className="text-sm bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-lg transition-colors"
+                        className="text-xs bg-purple-600 hover:bg-purple-700 text-white py-2 px-3 rounded-lg transition-colors whitespace-nowrap"
                       >
                         Compare
                       </Link>
